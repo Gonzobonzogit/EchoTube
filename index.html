@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EchoTube - Make Your Creations Echo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./css/style.css" />
+  <link rel="icon" type="image/svg+xml" sizes="any" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#b34747">
+</head>
+<body>
+    <!-- Start Fade in animation and loading spinner-->
+  <div id="fadein" class="position-fixed top-0 start-0 w-100 h-100 bg-white" style="animation: fadeinall 1s normal 0.3s both;"></div>
+  <div id="loader-wrapper" class="bg-white position-fixed top-0 z-3 w-100 h-100 text-center"> 
+    <div class="spinner-border mt-5" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <!-- End fade in and loading spinner-->
+  <header class="top banner">
+    <div class="banner-grid">
+            <!--Left side for banner-->
+      <a href="#" class="linkedLogo" onclick="showView('home'); return false">
+        <img src="./images/echoLogo.svg"/>        
+         <div class="titleTextBox">
+           <div class="echo">
+             <h1 class="appName">EchoTube</h1>
+           </div>
+         </div>
+      </a>
+            <!--Center navigation options-->
+      <nav class="banner-nav">
+          <a href="#" class="nav-link" data-view="home" onclick="showView('home'); return false">Home</a>
+          <span class="NavSeperator">|</span>
+          <a href="#"  class="nav-link" data-view="bookmark" onclick="showView('bookmark'); return false">Bookmarks</a>
+          <span class="NavSeperator">|</span>
+          <a href="#" class="nav-link" data-view="search" onclick="showView('search'); return false">Search</a>
+          <span class="NavSeperator">|</span>
+          <a href="nav-link" data-view="about" onclick="showView('about'); return false">About us</a>
+      </nav>
+        
+            <!--Right hand side of banner-->
+      <form class="banner-search" onsubmit="handleSearch(event)" >
+        <input 
+            id="searchInput"
+            class="searchInput"
+            type"search"
+            placeholder="Search Youtube..."
+            autocomplete="off"        
+        />
+        <button class="searchBtn" type="submit"aria-label="Search">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </form>
+    </div>  
+  </header>  
+  <main>
+      <!-- Start Home Page -->
+    <section id="homeView">   
+     <h2 class="view-title">Welcome home</h2>
+       
+        <!--Home Bookmarks-->
+      <div id="home-section" >
+        <h3 class="section-title">Recent Bookmarks</h3>
+        <div id="newBookmarks" class="card-grid"></div>
+        <p id="noBookmarks" class="empt-msg" hidden>Nothing bookmarked yet!</p>
+      </div>
+          <!--Searches -->
+       <div id="home-section">
+        <h3 class="section-title">Recent searches</h3>
+        <div id="newSearches" class="chip-row"></div>
+        <p id="noSearches" class="empty-msg" hidden>Make some searches then come back!!</p>
+      </div>
+          <!--Suggested for you-->
+      <div id="home-section">
+        <h3 class="section-title">Suggest Videos</h3>
+        <div id="recommended" class="card-grid"></div>
+        <p id="suggestedComingSoon" class="empty-msg" hidden>Suggestions under construction. Make more bookmarks for now.</p>
+      </div>
+    </section>
+      <!--End home-->
+      <!--Start Bookmark page-->
+    <section id="bookmarkedView">
+     <h2 id="section-title">Your Bookmarks</h2>
+     <div class="bookmarkBar">
+       <select id="sortBookmarks" class="form-select form-select-sm bg-dark text-light" onchange="renderBookmarksView()">
+        <option value="savedAt-desc">Most Recent First</option>
+        <option value="savedAt-asc">Older First</option>
+        <option value="titleAsc">Title A-Z</option>
+        <option value="titleDesc">Title Z-A</option>
+       </select>
+       <span id="bookmarkCount" class="text-muted small"></span>         
+     </div>
+     <div id="bookmarkList" class="card-grid"></div>
+     <p id="EmptyBookmarks" class="empy-<F22><F23>msg"
+    </section>
+  </main> 
+
+    <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Accordion Section Heading 1
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Accordion Section Content 1
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Accordion Section Heading 2
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Accordion Section Content 2
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Accordion Section Heading 3
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Accordion Section Content 3
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed top-0 w-100 p-2 text-bg-dark d-flex justify-content-between"><p>This is an announcemet.</p><button type="button" class="btn-close btn-close-white" onClick="parentNode.remove()" aria-label="Close"></button></div>
+  <footer>
+    <small>© <script>document.write(new Date().getFullYear())</script> Your company name. All Rights Reserved.</small>
+  </footer>
+  <script src="https://code.jquery.com/jquery-4.0.0.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+  window.onload = function(){    setTimeout(function(){
+      document.getElementById("fadein").remove();
+    },1000);
+  };
+  </script>
+  <script type="text/javascript">
+    $(window).on('load', function() {
+      $("#loader-wrapper").fadeOut(700);
+    });
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

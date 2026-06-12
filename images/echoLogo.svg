@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400" role="img" aria-label="EchoTube logo">
+  <title>EchoTube Logo</title>
+  <desc>A red play button with concentric outlined play triangles echoing outward, suggesting sound waves rippling from the source.</desc>
+
+  <!--
+    USAGE NOTES
+    ----------
+    To use this logo in your page:
+
+    OPTION A - Inline it directly in your HTML
+      Copy this entire <svg>...</svg> block and paste it where
+      you want the logo to appear. The animation will work
+      automatically because the class names are baked in.
+
+    OPTION B - Load it as an external file
+      <img src="./images/echoLogo.svg" alt="EchoTube" />
+      This works for the static logo but the pulse animation
+      will NOT work, because CSS in your page can't reach
+      inside an external SVG file. To get the animation, you
+      must use Option A (inline the SVG).
+  -->
+
+  <!-- ================================================================
+       BACKGROUND CONTAINER - solid red rounded rectangle
+       ================================================================ -->
+  <rect x="30" y="30" width="140" height="140" rx="26" ry="26"
+        fill="#c4302b" />
+
+  <rect x="31" y="31" width="138" height="138" rx="25" ry="25"
+        fill="none" stroke="#000000" stroke-width="0.5" opacity="0.22" />
+
+  <!-- ================================================================
+       ECHO TRIANGLES - 4 concentric play triangles
+       Each has a class "echo-ring echo-ring-N" so the pulse
+       animation in logo-pulse.css can target them.
+       ================================================================ -->
+
+  <!-- 1st echo (innermost) -->
+  <polygon class="echo-ring echo-ring-1"
+           points="92,89 92,111 106,100"
+           fill="none" stroke="#ffffff" stroke-width="2" opacity="0.34" />
+
+  <!-- 2nd echo ring -->
+  <polygon class="echo-ring echo-ring-2"
+           points="90.4,85 90.4,115 109.3,100"
+           fill="none" stroke="#ffffff" stroke-width="2" opacity="0.26" />
+
+  <!-- 3rd echo ring -->
+  <polygon class="echo-ring echo-ring-3"
+           points="88.7,81 88.7,119 112.7,100"
+           fill="none" stroke="#ffffff" stroke-width="2" opacity="0.18" />
+
+  <!-- 4th echo ring (outermost) -->
+  <polygon class="echo-ring echo-ring-4"
+           points="87,77 87,123 116,100"
+           fill="none" stroke="#ffffff" stroke-width="2" opacity="0.11" />
+
+  <!-- ================================================================
+       CORE PLAY TRIANGLE - solid white, the "source" of the echo.
+       No class - it doesn't animate, it stays steady.
+       ================================================================ -->
+  <polygon points="92,89 92,111 106,100"
+           fill="#ffffff" />
+</svg>

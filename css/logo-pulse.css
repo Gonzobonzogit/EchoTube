@@ -1,0 +1,54 @@
+/* =====================================================================
+   EchoTube Logo - Pulse Animation
+   Paste this block at the end of style.css (or wherever your logo
+   styles live). The animation makes the echo rings slowly breathe
+   in and out, like sound waves actually rippling outward from the
+   play triangle.
+
+   HOW IT WORKS
+   - The 4 outline rings scale up slightly and fade a bit more,
+     then return. The animation is staggered so each ring "pulses"
+     at a slightly different time, creating a wave-like effect.
+   - The solid center triangle does NOT animate - it stays steady
+     as the "source" of the echo.
+   - The red container does NOT animate - it's the stage.
+
+   REQUIRES
+   - The SVG logo file to be inlined into your HTML (not loaded as
+     an <img src="...">), OR each ring to have a class on it.
+   - See "WIRING IT UP" below for the HTML changes.
+   ===================================================================== */
+
+/* The animation itself - scale up slightly + fade a bit more.
+   Using transform-origin: center makes it scale from the middle
+   of each ring, not from the SVG's origin. */
+@keyframes echoPulse {
+  0%   { transform: scale(1);    opacity: var(--echo-base-opacity, 0.3); }
+  50%  { transform: scale(1.12); opacity: calc(var(--echo-base-opacity, 0.3) * 0.55); }
+  100% { transform: scale(1);    opacity: var(--echo-base-opacity, 0.3); }
+}
+
+/* Apply the animation to every ring.
+   Each ring gets a different animation-delay so they pulse in
+   sequence, not all at once. This creates the "wave" effect. */
+.echo-ring {
+  animation: echoPulse 2.4s ease-in-out infinite;
+  transform-box: fill-box;       /* makes transform-origin work in SVG */
+  transform-origin: center;      /* scale from each ring's own center */
+  will-change: transform, opacity; /* performance hint to the browser */
+}
+
+/* Stagger the rings - each one starts a bit later than the last */
+.echo-ring-1 { animation-delay: 0s;     --echo-base-opacity: 0.34; }
+.echo-ring-2 { animation-delay: 0.25s;  --echo-base-opacity: 0.26; }
+.echo-ring-3 { animation-delay: 0.5s;   --echo-base-opacity: 0.18; }
+.echo-ring-4 { animation-delay: 0.75s;  --echo-base-opacity: 0.11; }
+
+/* Respect users who prefer reduced motion (accessibility).
+   If they have motion-sensitivity settings on, the logo stays
+   still instead of pulsing. */
+@media (prefers-reduced-motion: reduce) {
+  .echo-ring {
+    animation: none;
+  }
+}
