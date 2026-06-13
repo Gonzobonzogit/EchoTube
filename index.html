@@ -67,19 +67,19 @@
     <section id="homeView">   
      <h2 class="view-title">Welcome home</h2>
        
-        <!--Home Bookmarks-->
+        <!--Homepage Bookmarks-->
       <div id="home-section" >
         <h3 class="section-title">Recent Bookmarks</h3>
         <div id="newBookmarks" class="card-grid"></div>
         <p id="noBookmarks" class="empt-msg" hidden>Nothing bookmarked yet!</p>
       </div>
-          <!--Searches -->
+          <!--Homepage Searches -->
        <div id="home-section">
         <h3 class="section-title">Recent searches</h3>
         <div id="newSearches" class="chip-row"></div>
         <p id="noSearches" class="empty-msg" hidden>Make some searches then come back!!</p>
       </div>
-          <!--Suggested for you-->
+          <!--Suggested for you From homepage-->
       <div id="home-section">
         <h3 class="section-title">Suggest Videos</h3>
         <div id="recommended" class="card-grid"></div>
@@ -88,9 +88,9 @@
     </section>
       <!--End home-->
       <!--Start Bookmark page-->
-    <section id="bookmarkedView">
-     <h2 id="section-title">Your Bookmarks</h2>
-     <div class="bookmarkBar">
+    <section id="bookmarkedView" class="app-view">
+     <h2 id="page-title">Your Bookmarks</h2>
+        <div class="bookmarkBar">
        <select id="sortBookmarks" class="form-select form-select-sm bg-dark text-light" onchange="renderBookmarksView()">
         <option value="savedAt-desc">Most Recent First</option>
         <option value="savedAt-asc">Older First</option>
@@ -100,49 +100,51 @@
        <span id="bookmarkCount" class="text-muted small"></span>         
      </div>
      <div id="bookmarkList" class="card-grid"></div>
-     <p id="EmptyBookmarks" class="empy-<F22><F23>msg"
+     <p id="EmptyBookmarks" class="empy-msg"
     </section>
-  </main> 
+        <!--End bookmark page-->
+        <!--Start Main Search Bar-->
+    <section id="search-section" class="app-view">
+      <h2 id="page-title">Search Youtube</h2>
+        <div class="mainSearchBar">
+          <select id="searchBarFilter" class="form-select form-select-sm bg-dark text-light" onchange="runSearch()">
+            <option value="relevance" class="searchFilter">Relevance</option>           
+            <option value="date" class="searchFilter">Date</option>
+            <option value="rating" class="searchFilter">Rating</option>
+            <option value="view-count" class="searchFilter">Views</option>
+          </select>
+          <span id="searchStatus" class="text-muted small"></span>
+        </div>
+        <div id="searchPageResults" class="card-grid">
+          <p id="emptySearch" class="empty-msg" hidden>Start searching for your favorite Youtube videos</p>
+          <p id="searchError" class="error-msg" hidden></p>
+        </div>
+    </section>
+      <!--End Main search bar-->
+      <!--Start About us cards-->
+      <section id="aboutUsPage" class="app-view">
+       <h2 id="page-title">About EchoTube</h2>
+        <div class="about-card">
+            <h3>What is EchoTube?</h3>
+            <p>EchoTube is a experiment in the works. An algorithm free platform, where you can search the massive video collections of Youtube, pick your favorite videos, bookmark them in one simple spot, and come back to view them later.</p>
 
-    <div class="accordion" id="accordionExample">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingOne">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Accordion Section Heading 1
-        </button>
-      </h2>
-      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          Accordion Section Content 1
+            <h3>How Does EchoTube work?</h3>
+             <ul>
+              <li>Search with the official <a href="https://developers.google.com/youtube/v3" target="_blank" rel="noopener">Youtube Data API</a> created by Google.</li>
+              <li>API Keys stay in the server where EchoTube runs. Zero chance of leaking your key to the public. <strong>(This does mean you will need a FREE api key)</strong></li>
+              <li>Bookmarks are stored in your browser's localStorage. They don't sync across devices, but they also don't require an account.</li>
+             </ul>
+
+            <h3>What Could be next?</h3>
+             <ul>
+              <li><strong>Vault:</strong> Archive Creative Commons-licensed videos for offline viewing.</li>
+              <li><strong>Channel Backup:</strong> Connect your YouTube account to back up your own uploads.</li>
+              <li><strong>Sync:</strong> Optional account system so bookmarks follow you across devices.</li>
+             </ul>
+          <p class="aboutUsFooter">Built using HTML, CSS, Bootstrap, Vanilla JavaScript, and Node.js + Express. <br/>No Frameworks, no databases, no tracking.</p>
         </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingTwo">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Accordion Section Heading 2
-        </button>
-      </h2>
-      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          Accordion Section Content 2
-        </div>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="headingThree">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Accordion Section Heading 3
-        </button>
-      </h2>
-      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          Accordion Section Content 3
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="position-fixed top-0 w-100 p-2 text-bg-dark d-flex justify-content-between"><p>This is an announcemet.</p><button type="button" class="btn-close btn-close-white" onClick="parentNode.remove()" aria-label="Close"></button></div>
+      </section>
+  </main> 
   <footer>
     <small>© <script>document.write(new Date().getFullYear())</script> Your company name. All Rights Reserved.</small>
   </footer>
