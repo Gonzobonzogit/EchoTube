@@ -1,30 +1,453 @@
-  
+/* =====================================================================
+   EchoTube — stylesheet
+   Palette: dark base (Dracula/Catppuccin vibe) with YouTube-red accents
 
+   Translated + pruned from EchoVideoBAKup/assets/css/style.css.
+   Selectors target the union of classes used in index.html AND the
+   classes that js/app.js injects into the DOM at runtime, so every
+   element on the page (static or dynamic) gets styled.
 
+   Dead selectors removed: .logo-box, .logo-echo, .echo-triangle,
+   .t1/.t2/.t3 (no equivalent in HTML — logo is an <img> now).
+   ===================================================================== */
 
+:root {
+  /* Core dark palette */
+  --bg-base:        #181818;   /* page background */
+  --bg-elevated:    #1f1f1f;   /* cards, search bar */
+  --bg-input:       #2a2a2a;   /* input fields, slightly lighter */
+  --border-subtle:  #2f2f2f;   /* subtle dividers */
+  --text-primary:   #f1f1f1;   /* main text */
+  --text-muted:     #aaaaaa;   /* secondary text */
+  --text-dim:       #717171;   /* tertiary text */
 
+  /* Accent colors */
+  --accent-red:     #c4302b;   /* YouTube-style red, slightly darker */
+  --accent-red-hi:  #e5383b;   /* hover state */
+  --accent-purple:  #bd93f9;   /* Catppuccin lavender */
+  --accent-green:   #50fa7b;   /* saved state */
+  --accent-yellow:  #f1fa8c;   /* highlights */
 
-
-
-
-
-@keyframes fadeinall {
-    0% {
-      opacity: 1; 
-    }
-    97% {
-      opacity: 0; 
-    }
-    98% {
-      opacity: 0;
-      -webkit-transform: translateY(0);
-      transform: translateY(0); 
-    }
-    100% {
-      opacity: 0;
-      -webkit-transform: translateY(-100%);
-      transform: translateY(-100%);
-      z-index: -1; 
-    } 
+  /* Layout */
+  --banner-height:  65px;
+  --radius-sm:      4px;
+  --radius-md:      8px;
+  --radius-lg:      12px;
 }
 
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+}
+
+a { color: var(--accent-red-hi); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+
+/* =====================================================================
+   TOP BANNER
+   EchoTube HTML: <header class="top banner">
+   --------------------------------------------------------------------- */
+.top.banner {
+  background: var(--accent-red);
+  height: var(--banner-height);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.banner-grid {
+  height: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+
+
+/* ---------- LEFT: Logo + brand ----------
+   EchoTube HTML: <a class="linkedLogo"><img><div class="titleTextBox">
+                                          <div class="echo"><h1 class="appName"> */
+.linkedLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.linkedLogo:hover { text-decoration: none; }
+
+/* The image replaces the CSS-drawn triangle logo from the backup */
+.linkedLogo img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+/* Layout wrappers around the brand name */
+.titleTextBox,
+.echo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  margin: 0;
+}
+
+
+/* ---------- CENTER: Nav links ---------- */
+.banner-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.nav-link {
+  color: #fff;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease;
+}
+.nav-link:hover {
+  background: rgba(0,0,0,0.2);
+  text-decoration: none;
+}
+.nav-link.active {
+  background: rgba(0,0,0,0.35);
+  text-decoration: none;
+}
+.NavSeperator {
+  color: rgba(255,255,255,0.4);
+  user-select: none;
+}
+
+
+/* ---------- RIGHT: Search bar ---------- */
+.banner-search {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  height: 38px;
+  width: 340px;
+  max-width: 100%;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);
+}
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0 12px;
+  background: transparent;
+  color: #222;
+  font-size: 0.95rem;
+  height: 100%;
+}
+.searchInput::placeholder { color: #888; }
+.navSearchBtn {
+  background: var(--bg-elevated);
+  border: none;
+  height: 100%;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.navSearchBtn:hover { background: #000; }
+
+
+/* =====================================================================
+   MAIN CONTENT AREA
+   EchoTube HTML: <main> has no class — target the tag directly
+   --------------------------------------------------------------------- */
+main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 32px 24px 80px 24px;
+}
+
+/* fadeIn animation. #home-section included because home lacks .app-view */
+.app-view, #home-section {
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.view-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+/* EchoTube HTML uses .container-title instead of .section-title */
+.container-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-purple);
+  margin: 32px 0 14px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+/* =====================================================================
+   CARD GRID (used by search results, bookmarks, home recent)
+   EchoTube JS uses .videoCard (camelCase, no hyphen) for the card itself
+   --------------------------------------------------------------------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.videoCard {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 1px solid var(--border-subtle);
+}
+.videoCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  border-color: #3a3a3a;
+}
+
+/* JS creates the thumbnail with class="thumnailItem" (typo) on line 113
+   but queries ".thumbnail" (correct spelling) on line 260 — see JS bug list.
+   Styling both so either name works. */
+.thumnailItem,
+.thumbnail {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #000;
+  display: block;
+}
+
+.videoBody {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+
+.videoTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  min-height: 2.7em;
+}
+
+.videoChannel {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.vidActions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+
+/* =====================================================================
+   BUTTONS
+   EchoTube JS uses .baseBtn / .watchBtn / .saveBtn / .rmBtn
+   --------------------------------------------------------------------- */
+.baseBtn {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+.baseBtn:active { transform: scale(0.97); }
+
+/* Save button: transparent default, green when saved */
+.saveBtn {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--text-dim);
+}
+.saveBtn:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+/* JS uses BOTH .isSaved (template literal, line 119) and .saved
+   (classList.add, line 262) as the saved-state class. Style both. */
+.saveBtn.saved,
+.saveBtn.isSaved {
+  background: var(--accent-green);
+  color: #003800;
+  border-color: var(--accent-green);
+}
+.saveBtn.saved:hover,
+.saveBtn.isSaved:hover { background: #3ee066; }
+
+.watchBtn {
+  background: var(--accent-red);
+  color: #fff;
+}
+.watchBtn:hover {
+  background: var(--accent-red-hi);
+  text-decoration: none;
+  color: #fff;
+}
+
+.rmBtn {
+  background: transparent;
+  color: #ff6b6b;
+  border: 1px solid #6b2a2a;
+}
+.rmBtn:hover { background: #2a0d0d; }
+
+
+/* =====================================================================
+   TOOLBAR (filter dropdowns, counts, etc.)
+   EchoTube HTML uses .mainSearchBar and .bookmarkBar
+   --------------------------------------------------------------------- */
+.mainSearchBar, .bookmarkBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.mainSearchBar select,
+.bookmarkBar select {
+  width: auto;
+  min-width: 180px;
+}
+
+.form-select.bg-dark {
+  background-color: var(--bg-elevated) !important;
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+
+/* =====================================================================
+   CHIPS (recent search history)
+   EchoTube JS creates these with class="chip" on line 232
+   --------------------------------------------------------------------- */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.chip:hover {
+  background: var(--bg-input);
+  border-color: var(--accent-purple);
+}
+
+
+/* =====================================================================
+   MESSAGES
+   --------------------------------------------------------------------- */
+.empty-msg {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 16px 0;
+}
+.error-msg {
+  color: #ff6b6b;
+  background: #2a0d0d;
+  border: 1px solid #6b2a2a;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-top: 12px;
+}
+
+
+/* =====================================================================
+   ABOUT CARD
+   EchoTube HTML: <div class="about-card"> ... <p class="aboutUsFooter">
+   --------------------------------------------------------------------- */
+.about-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  max-width: 720px;
+}
+.about-card h3 {
+  color: var(--accent-purple);
+  margin-top: 24px;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+.about-card h3:first-child { margin-top: 0; }
+.about-card p, .about-card li { color: var(--text-primary); line-height: 1.6; }
+.about-card ul { padding-left: 20px; }
+.about-card li { margin-bottom: 6px; }
+
+/* EchoTube HTML uses .aboutUsFooter instead of .about-footer */
+.aboutUsFooter {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+
+/* =====================================================================
+   FOOTER
+   EchoTube HTML: <footer> has no class — target the tag directly
+   --------------------------------------------------------------------- */
+footer {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 24px 16px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+}

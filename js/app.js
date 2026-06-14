@@ -116,8 +116,8 @@ const buildCard = ({ videoId, title, channel, thumbnail, saved}) => {
       <p class="videoChannel">${escapeHtml(channel)}</p>
       <div class="vidActions">
         <a class="baseBtn watchBtn" href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener">Watch</a>
-        <button class="baseBtn saveBtn ${saved ? 'saving..' : ''}"  data-action="save" data-id="${videoId}">
-         ${saved ? 'Saved Video' : 'Save'} 
+        <button class="baseBtn saveBtn ${saved ? 'isSaved' : ''}"  data-action="save" data-id="${videoId}">
+          ${saved ? '✓ Saved' : 'Save'}
         </button>
       </div>
     </div>
@@ -199,9 +199,9 @@ const renderBookmarkSection = () => {
     const card = buildCard({ ...b, saved: true })
 
     const saveBtn = card.querySelector('[data-action="save"]')
-    saveBtn.className = 'baseBtn unsave-btn';
-    saveBtn.dataset.action = 'unsave';
-    saveBtn.textContent = 'Unsave';
+    saveBtn.className = 'baseBtn rmBtn';
+    saveBtn.dataset.action = 'rm';
+    saveBtn.textContent = 'Remove';
     $bookmarkList.appendChild(card);
   })
 }
@@ -241,3 +241,53 @@ const renderHomeSection = () => {
     })
   }
 }
+
+
+//--------------------------- event handlers --------------------------------------------
+
+document.body.addEventListener('click', e => {
+  const saveBtn = e.target.closest('[data-action="save"]');
+  if(saveBtn){
+    const card = saveBtn.closest('.videoCard');
+    if(!card) return;
+    const id = saveBtn.dataset.id;
+    if(isBookmarked(id)) return
+    
+    addBookmark({
+      videoId: id,
+      title: card.querySelector('.videoTitle').textContent,
+      channel: card.querySelector('.videoChannel').textContent,
+      thumbnail: card.querySelector('.thumbnail').src
+    })
+    saveBtn.classList.add('saved')
+    saveBtn.textContent = '✓ Saved'
+    return
+  }
+
+  const rmBtn = e.target.closest('[data-action="rm"]')
+  if(rmBtn){
+    const id = rmBtn.dataset.id;
+    rmBookmark(id)
+    if(currentSection === 'bookmarks') renderBookmarkSection();
+    if(currentSection === 'home') renderHomeView();
+  }
+})
+
+
+// ------------------------ Html Escape ------------------------------------
+
+const escapeHtml = (str) => {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+const escapeAttr(str){
+  return escapeHtml(str)
+}
+
+
+//------------------------- Init Render --------------------------------------
+showSection('home')

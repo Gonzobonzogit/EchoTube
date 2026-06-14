@@ -34,11 +34,11 @@
       <nav class="banner-nav">
           <a href="#" class="nav-link" data-view="home" onclick="showSection('home'); return false">Home</a>
           <span class="NavSeperator">|</span>
-          <a href="#"  class="nav-link" data-view="bookmark-section" onclick="showSection('bookmark'); return false">Bookmarks</a>
+          <a href="#"  class="nav-link" data-view="bookmark" onclick="showSection('bookmark'); return false">Bookmarks</a>
           <span class="NavSeperator">|</span>
-          <a href="#" class="nav-link" data-view="search-section" onclick="showSection('search'); return false">Search</a>
+          <a href="#" class="nav-link" data-view="search" onclick="showSection('search'); return false">Search</a>
           <span class="NavSeperator">|</span>
-          <a href="#" class="nav-link" data-view="aboutUs-section" onclick="showSection('about'); return false">About us</a>
+          <a href="#" class="nav-link" data-view="about" onclick="showSection('about'); return false">About us</a>
       </nav>
         
             <!--Right hand side of banner-->
@@ -46,7 +46,7 @@
         <input 
             id="searchInput"
             class="searchInput"
-            type"search"
+            type="search"
             placeholder="Search Youtube..."
             autocomplete="off"        
         />
@@ -68,7 +68,7 @@
       <div id="home-container-bookmarks" >
         <h3 class="container-title">Recent Bookmarks</h3>
         <div id="homeBookmarks" class="card-grid"></div>
-        <p id="noHomeBookmarks" class="empt-msg" hidden>Nothing bookmarked yet!</p>
+        <p id="noHomeBookmarks" class="empty-msg" hidden>Nothing bookmarked yet!</p>
       </div>
 
           <!--Homepage Searches -->
