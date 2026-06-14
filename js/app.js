@@ -1,7 +1,6 @@
 //Getting the backend wired up for successful api calls 
 
 const $searchInput = document.getElementById('searchInput');
-
 const $searchResults = document.getElementById('searchPageResults');
 const $searchStatus = document.getElementById('searchStatus');
 const $emptySearch = document.getElementById('emptySearch');
@@ -10,16 +9,19 @@ const $sortBookmarks = document.getElementById('sortBookmarks');
 const $bookmarkCount = document.getElementById('bookmarkCount');
 const $bookmarkList = document.getElementById('bookmarkList');
 const $emptyBookmarks = document.getElementById('emptyBookmarks');
+const $homeBookmarks = document.getElementById('homeBookmarks');
+const $noHomeBookmarks = document.getElementById('noHomeBookmarks');
 const $newHomeHistory = document.getElementById('newHomeHistory');
 const $noHomeHistory = document.getElementById('noHomeHistory');
 
 
 let currentSection = 'home';
 
+//---------------------- Nav ----------------------------------------
+
 const showSection = (name) =>{
   const sections = ['home', 'search', 'bookmark', 'aboutUs'];
 
-  //run a loop on the view sections
   sections.forEach(s => {
     const el = document.getElementById(s + '-section');
     if(el) el.hidden = (s !== name);
@@ -33,6 +35,8 @@ document.querySelectorAll('.nav-link').forEach(link => {
   if(name === 'bookmark-section') renderBookmarksView();
   if(name === 'home') renderHomeView();
 }
+
+//---------------------------- Search ---------------------------------
 
 const search = async() => {
   const query = $searchInput.value.trim();
@@ -85,7 +89,7 @@ const completeSearch(event){
 search()
 } 
 
-//Adding contents to cards
+//---------------------------Adding contents to cards---------------------------
 
 const buildResultCard = (newItem, alreadySavedItem) => {
   const videoId = item.id.videoId;
@@ -123,7 +127,117 @@ const buildCard = ({ videoId, title, channel, thumbnail, saved}) => {
 
 
 
-//Bookmarks
+//------------------------------Check Bookmarks----------------------------
+const STORAGE_KEY = 'echotube-bookmarks';
+const HISTORY_KEY = 'echotube-history';
 
 
+const getBookmarks = () => {
+  try{
+    const rawData = localStorage.getItem(STORAGE_KEY);
+    return rawData  ? JSON.parse(rawData) : []
+  } catch(e){
+    console.warn('Bookmarks in local storage may be corrupted:', e);
+    return []
+  }
+}
 
+
+const saveBookmark = (bookmark) => {localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks))};
+
+const isBookmarked = (videoId) => {return.getBookmarks().some(b => b.videoId === videoId)};
+
+const addBookmark = ({ videoId, title, channel, thumbnail }) => {
+  if(isBookmarked(videoId)) return;
+  const bookmarks = getBookmarks();
+  bookmarks.push({ videoId, title, channel, thumbnail, savedAt: Date.now() })
+  saveBookmark(bookmarks);
+}
+
+//----------------------------Check History----------------------------------
+
+const getHistory = () =>{
+  try{
+    const rawData = localStorage.getItem(HISTORY_KEY);
+    return rawData ? JSON.parse(rawData) : [];
+  } catch(e) { return [] };
+}
+
+const recordSearchHistory = (query) =>{
+  const history = getHistory()
+  const filterHistory = history.filter(h => h.toLowerCase() !== query.toLowerCase())
+  filterHistory.unshift(query)
+
+  saveHistory(filterHistory.slice(0, 10))
+}
+
+const saveHistory = (history) => { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)) };
+
+
+//------------------------ Bookmark Section -----------------------------------
+
+const renderBookmarkSection = () => {
+  const bookmarks = getBookmarks();
+  const sortValue = $bookmarkSort.value;
+  const [field, dir] = sortValue.split((a, b) => {
+    let cmp = 0;
+    if(field === 'savedAt') cmp = a.savedAt - b.savedAt
+    if(field === 'title') cmp = a.title.localeCompare(b.title);
+    return dir === 'desc' ? -cmp : cmp
+  })
+
+  $bookmarkList.innerHTML = '';
+  if(sorted.length === 0){
+    $emptyBookmarks.hidden = false;
+    $bookmarkCount.textContent = '';
+    return
+  }
+  $emptyBookmarks.hidden = true;
+  $bookmarkCount.textContent = `${sorted.length} video${sorted.length === 1 ? '' : 's'} saved`
+
+  sorted.forEach(b => {
+    const card = buildCard({ ...b, saved: true })
+
+    const saveBtn = card.querySelector('[data-action="save"]')
+    saveBtn.className = 'baseBtn unsave-btn';
+    saveBtn.dataset.action = 'unsave';
+    saveBtn.textContent = 'Unsave';
+    $bookmarkList.appendChild(card);
+  })
+}
+
+const renderHomeSection = () => {
+  const recent = getBookmarks()
+    .sort((a, b) => b.savedAt - a.savedAt)
+    .slice(0, 6)
+  $homeBookmarks.innerHTML = '';
+  if(recent.length === 0){
+    $noHomeBookmarks.hidden = false;
+  } else {
+    $noHomeBookmarks.hidden = true;
+    recent.forEach(b => {
+      $homeBookmarks.appendChild(buildCard({ ...b, saved: true }))
+    })
+  }
+
+
+  const history = getHistory()
+  $newHomeHistory.innerHTML = ''
+  if(history.length === 0){
+    $noHomeHistory.hidden = false 
+  } else {
+    $noHomeHistory.hidden = true;
+    history.forEach(q => {
+      const chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.type = 'button';
+      chip.textContent = q
+      chip.onClick = () => {
+        $searchInput.value = q
+        showSection('search')
+        search();
+      }
+      $newHomeHistory.appendChild(chip);
+    })
+  }
+}
